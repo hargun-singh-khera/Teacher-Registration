@@ -127,10 +127,10 @@ const TeacherRegistrationForm = () => {
     const profileImageRef = useRef(null)
     const resumeFileRef = useRef(null)
     const documentsRef = useRef(null)
-    const classNamesRef = useRef(null)
-    const subjectsRef = useRef(null)
-    const qualificationsRef = useRef(null)
-    const boardRef = useRef(null)
+    // const classNamesRef = useRef(null)
+    // const subjectsRef = useRef(null)
+    // const qualificationsRef = useRef(null)
+    // const boardRef = useRef(null)
 
     const [formData, setFormData] = useState(initialFormData)
     const [isSubmit, setIsSubmit] = useState(false)
@@ -169,18 +169,18 @@ const TeacherRegistrationForm = () => {
                 if(documentsRef.current) {
                     documentsRef.current.value = null
                 }
-                if(classNamesRef.current) {
-                    classNamesRef.current.value = null
-                }
-                if(subjectsRef.current) {
-                    subjectsRef.current.value = null
-                }
-                if(qualificationsRef.current) {
-                    qualificationsRef.current.value = null
-                }
-                if(boardRef.current) {
-                    boardRef.current.value = null
-                }
+                // if(classNamesRef.current) {
+                //     classNamesRef.current.value = null
+                // }
+                // if(subjectsRef.current) {
+                //     subjectsRef.current.value = null
+                // }
+                // if(qualificationsRef.current) {
+                //     qualificationsRef.current.value = null
+                // }
+                // if(boardRef.current) {
+                //     boardRef.current.value = null
+                // }
             } catch (error) {
                 if(error.response?.status === 409) {
                     toast.error("Teacher with the email or phone already exists.")
@@ -224,7 +224,7 @@ const TeacherRegistrationForm = () => {
 
     const handleMultiSelectChange = (field) => (e) => {
         const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
-        console.log("selectedValues", e.target.selectedOptions)
+        // console.log("selectedValues", e.target.selectedOptions)
         setFormData((prev) => ({
             ...prev,
             [field]: selectedValues,
@@ -260,11 +260,11 @@ const TeacherRegistrationForm = () => {
                 </div>
                 <SectionHeading title="Professional Details" />
                 <div className="grid gap-4 sm:gap-x-10 sm:gap-y-6 sm:grid-cols-2">
-                    <MultiSelectDropdown label="class names" ref={classNamesRef} value={formData.classNames} options={classNamesOptions} onChange={handleMultiSelectChange("classNames")} />
-                    <MultiSelectDropdown label="subjects" ref={subjectsRef} value={formData.subjects} options={subjectOptions} onChange={handleMultiSelectChange("subjects")}  />
-                    <MultiSelectDropdown label="qualifications" ref={qualificationsRef} value={formData.qualifications} options={qualificationsOptions} onChange={handleMultiSelectChange("qualifications")} />
+                    <MultiSelectDropdown label="class names" name="classNames" value={formData.classNames} options={classNamesOptions} onChange={handleMultiSelectChange("classNames")} />
+                    <MultiSelectDropdown label="subjects" name="subjects" value={formData.subjects} options={subjectOptions} onChange={handleMultiSelectChange("subjects")}  />
+                    <MultiSelectDropdown label="qualifications" name="qualifications" value={formData.qualifications} options={qualificationsOptions} onChange={handleMultiSelectChange("qualifications")} />
                     <InputField label="experience" inputType="number" placeholder="Enter your experience" name="experience" value={formData.experience} onChange={handleChange} />
-                    <MultiSelectDropdown label="board" ref={boardRef} value={formData.board} options={boardOptions} onChange={handleMultiSelectChange("board")} />
+                    <MultiSelectDropdown label="board" name="board" value={formData.board} options={boardOptions} onChange={handleMultiSelectChange("board")} />
                     <InputField label="school" name="schoolName" placeholder="Enter your school" value={formData.schoolName} onChange={handleChange} />
                     <InputField label="students mentored" inputType="number" name="studentsMentored" placeholder="Enter students mentored" value={formData.studentsMentored} onChange={handleChange} />
                     <FileInput label="resume upload" ref={resumeFileRef} name="resumeFileUrl" onChange={handleFileChange} />

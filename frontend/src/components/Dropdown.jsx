@@ -13,7 +13,7 @@ const Dropdown = ({label, options, name, isRequired = false, value, onChange, er
               name={name}
               onChange={onChange}
               className="py-3 px-4 pe-16 block w-full border-red-500 rounded-lg text-sm focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none">
-              <option value="">Open this select menu</option>
+              <option value="" disabled>Open this select menu</option>
               {options.map(option => (<option key={option} value={option}>{option}</option>))}
             </select>
             <div className="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-8">
@@ -36,7 +36,7 @@ const Dropdown = ({label, options, name, isRequired = false, value, onChange, er
               name={name}
               onChange={onChange} 
               className={`py-3 px-4 pe-16 block w-full ${value ? "border-teal-500 focus:border-teal-500 focus:ring-teal-500" : ""}  rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none`}>
-              <option value="">Open this select menu</option>
+              <option value="" disabled>Open this select menu</option>
               {options.map(option => (<option key={option} value={option}>{option}</option>))}
             </select>
             {value && (<div className="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-8">
