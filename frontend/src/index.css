@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Preline UI */
+@source "../node_modules/preline/dist/*.js";
+@import "../node_modules/preline/variants.css";
+
+/* Plugins */
+@plugin "@tailwindcss/forms";
+
+body {
+    background: #4CA1AF;  
+    background: -webkit-linear-gradient(to right, #C4E0E5, #4CA1AF); 
+    background: linear-gradient(to right, #C4E0E5, #4CA1AF); 
+    /* background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); */
+}
