@@ -147,6 +147,7 @@ const TeacherRegistrationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const validationErrors = validateForm(formData);
+        console.log("validationErrors", validationErrors)
         setErrors(validationErrors)
         
         if(Object.keys(validationErrors).length === 0) {
@@ -159,13 +160,6 @@ const TeacherRegistrationForm = () => {
                 console.log("Teacher registered successfully:", response.data)
                 toast.success('Teacher registered successfully.')
                 setFormData(initialFormData)
-
-                // Force HS select to re-initialize
-                setTimeout(() => {
-                    if (window.HSselect) {
-                        window.HSselect.init();
-                    }
-                }, 0);
 
                 if(profileImageRef.current) {
                     profileImageRef.current.value = null
@@ -213,6 +207,9 @@ const TeacherRegistrationForm = () => {
             setFormData((prev) => ({...prev, 
                 address: {...prev.address, [addressField]: addressField === "pincode" ? value.replace(/[^0-9]/g, "") : value}
             }))
+            if(value.trim() !== "") {
+                setErrors((prev) => ({...prev, [addressField]: (addressField === "pincode" && !pincodeValidation(value)) ? "Pincode must be exaclty 6 digits" : "" }))
+            }
         }
         else if(name.includes("socialLinks.")) {
             const socialLinksField = name.split(".")[1]
@@ -225,7 +222,7 @@ const TeacherRegistrationForm = () => {
             setFormData((prev) => ({...prev, [name]: name === "phone" ? value.replace(/[^0-9]/g, "") : value}))
         }
         if (value.trim() !== "") {
-            setErrors(prev => ({ ...prev, [name]: "" }))
+            setErrors(prev => ({ ...prev, [name]: (name === "phone" && !phoneValidation(value)) ? "Phone number must be exactly 10 digits." : ""  }))
         }
     }
 
@@ -279,16 +276,16 @@ const TeacherRegistrationForm = () => {
                 </div>
                 <SectionHeading title="Address Details" />
                 <div className="grid gap-4 sm:gap-x-10 sm:gap-y-6 sm:grid-cols-2">
-                    <InputField label="area" placeholder="Enter area" name="address.area" value={formData.address?.area || ""} onChange={handleChange} />
-                    <InputField label="street" placeholder="Enter street" name="address.street" value={formData.address?.street || ""} onChange={handleChange} />
-                    <InputField label="city" placeholder="Enter city" name="address.city" value={formData.address?.city || ""} onChange={handleChange} />
-                    <InputField label="landmark" placeholder="Enter landmark" name="address.landmark" value={formData.address?.landmark || ""} onChange={handleChange} />
-                    <InputField label="pincode" placeholder="Enter pincode" name="address.pincode" value={formData.address?.pincode || ""} onChange={handleChange} maxLength={6} />
-                    <InputField label="country" placeholder="Enter country" name="address.country" value={formData.address?.country || ""} onChange={handleChange} />
+                    <InputField label="area" placeholder="Enter area" name="address.area" value={formData.address?.area} onChange={handleChange} />
+                    <InputField label="street" placeholder="Enter street" name="address.street" value={formData.address?.street} onChange={handleChange} />
+                    <InputField label="city" placeholder="Enter city" name="address.city" value={formData.address?.city} onChange={handleChange} />
+                    <InputField label="landmark" placeholder="Enter landmark" name="address.landmark" value={formData.address?.landmark} onChange={handleChange} />
+                    <InputField label="pincode" placeholder="Enter pincode" name="address.pincode" value={formData.address?.pincode} onChange={handleChange} maxLength={6} errors={errors.pincode} />
+                    <InputField label="country" placeholder="Enter country" name="address.country" value={formData.address?.country} onChange={handleChange} />
                 </div>
                 <SectionHeading title="Social Links" />
                 <div className="grid gap-4 sm:gap-x-10 sm:gap-y-6 sm:grid-cols-2">
-                    <InputField label="linkedin" placeholder="Enter linkedin" name="socialLinks.linkedIn" value={formData.socialLinks?.linkedIn || ""} onChange={handleChange} />
+                    <InputField label="linkedin" placeholder="Enter linkedin" name="socialLinks.linkedIn" value={formData.socialLinks?.linkedIn} onChange={handleChange} />
                 </div>
                 <SectionHeading title="Documents" />
                 <div className="grid gap-4 sm:gap-x-10 sm:gap-y-6 sm:grid-cols-2 mb-5">
