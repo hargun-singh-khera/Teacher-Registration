@@ -127,7 +127,7 @@ const TeacherRegistrationForm = () => {
     const profileImageRef = useRef(null)
     const resumeFileRef = useRef(null)
     const documentsRef = useRef(null)
-    // const classNamesRef = useRef(null)
+    const classNamesRef = useRef([])
     // const subjectsRef = useRef(null)
     // const qualificationsRef = useRef(null)
     // const boardRef = useRef(null)
@@ -160,6 +160,13 @@ const TeacherRegistrationForm = () => {
                 toast.success('Teacher registered successfully.')
                 setFormData(initialFormData)
 
+                // Force HS select to re-initialize
+                setTimeout(() => {
+                    if (window.HSselect) {
+                        window.HSselect.init();
+                    }
+                }, 0);
+
                 if(profileImageRef.current) {
                     profileImageRef.current.value = null
                 }
@@ -169,9 +176,9 @@ const TeacherRegistrationForm = () => {
                 if(documentsRef.current) {
                     documentsRef.current.value = null
                 }
-                // if(classNamesRef.current) {
-                //     classNamesRef.current.value = null
-                // }
+                if(classNamesRef.current) {
+                    classNamesRef.current.value = null
+                }
                 // if(subjectsRef.current) {
                 //     subjectsRef.current.value = null
                 // }
@@ -222,12 +229,13 @@ const TeacherRegistrationForm = () => {
         }
     }
 
-    const handleMultiSelectChange = (field) => (e) => {
-        const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
+    const handleMultiSelectChange = (e) => {
+        const { name, selectedOptions } = e.target
+        const selectedValues = Array.from(selectedOptions, option => option.value);
         // console.log("selectedValues", e.target.selectedOptions)
         setFormData((prev) => ({
             ...prev,
-            [field]: selectedValues,
+            [name]: selectedValues,
         }));
     }
 
@@ -260,11 +268,11 @@ const TeacherRegistrationForm = () => {
                 </div>
                 <SectionHeading title="Professional Details" />
                 <div className="grid gap-4 sm:gap-x-10 sm:gap-y-6 sm:grid-cols-2">
-                    <MultiSelectDropdown label="class names" name="classNames" value={formData.classNames} options={classNamesOptions} onChange={handleMultiSelectChange("classNames")} />
-                    <MultiSelectDropdown label="subjects" name="subjects" value={formData.subjects} options={subjectOptions} onChange={handleMultiSelectChange("subjects")}  />
-                    <MultiSelectDropdown label="qualifications" name="qualifications" value={formData.qualifications} options={qualificationsOptions} onChange={handleMultiSelectChange("qualifications")} />
+                    <MultiSelectDropdown label="class names" ref={classNamesRef} name="classNames" value={formData.classNames} options={classNamesOptions} onChange={handleMultiSelectChange} />
+                    <MultiSelectDropdown label="subjects" name="subjects" value={formData.subjects} options={subjectOptions} onChange={handleMultiSelectChange}  />
+                    <MultiSelectDropdown label="qualifications" name="qualifications" value={formData.qualifications} options={qualificationsOptions} onChange={handleMultiSelectChange} />
                     <InputField label="experience" inputType="number" placeholder="Enter your experience" name="experience" value={formData.experience} onChange={handleChange} />
-                    <MultiSelectDropdown label="board" name="board" value={formData.board} options={boardOptions} onChange={handleMultiSelectChange("board")} />
+                    <MultiSelectDropdown label="board" name="board" value={formData.board} options={boardOptions} onChange={handleMultiSelectChange} />
                     <InputField label="school" name="schoolName" placeholder="Enter your school" value={formData.schoolName} onChange={handleChange} />
                     <InputField label="students mentored" inputType="number" name="studentsMentored" placeholder="Enter students mentored" value={formData.studentsMentored} onChange={handleChange} />
                     <FileInput label="resume upload" ref={resumeFileRef} name="resumeFileUrl" onChange={handleFileChange} />
@@ -286,7 +294,9 @@ const TeacherRegistrationForm = () => {
                 <div className="grid gap-4 sm:gap-x-10 sm:gap-y-6 sm:grid-cols-2 mb-5">
                     <FileInput label="documents upload" ref={documentsRef} name="documents" onChange={handleFileChange} multiple={true} />
                 </div>
-                <Button btnName={isSubmit ? "Submitting..." : "Submit"} />
+                <div className="pb-[100px]">
+                    <Button isSubmit={isSubmit} />
+                </div>
                 <Toaster />
             </form>
         </div>

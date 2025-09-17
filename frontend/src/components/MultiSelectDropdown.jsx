@@ -1,11 +1,12 @@
 import { capitalizeString } from "../lib/utils.js";
 
-const MultiSelectDropdown = ({label, name, options, value, onChange}) => {
+const MultiSelectDropdown = ({label, name, ref, options, value, onChange}) => {
     return (
         <div className="flex flex-col text-left gap-2">
             <label htmlFor={label} className="text-sm">{capitalizeString(label)}</label>
             <select
                 multiple
+                id={label}
                 data-hs-select={`{
                     "placeholder": "Select multiple options...",
                     "toggleTag": "<button type='button' aria-expanded='false'></button>",
@@ -16,6 +17,7 @@ const MultiSelectDropdown = ({label, name, options, value, onChange}) => {
                     "extraMarkup": "<div class='absolute top-1/2 end-3 -translate-y-1/2'><svg class='shrink-0 size-3.5 text-gray-500' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m7 15 5 5 5-5'/><path d='m7 9 5-5 5 5'/></svg></div>"
                 }`}
                 className="hidden"
+                ref={ref}
                 name={name}
                 value={value}
                 onChange={onChange}
